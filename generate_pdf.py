@@ -1,9 +1,9 @@
 import os
-from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image, KeepTogether, Preformatted
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image, Preformatted
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfgen import canvas
@@ -27,26 +27,26 @@ class NumberedCanvas(canvas.Canvas):
 
     def draw_page_decorations(self, page_count):
         self.saveState()
-        self.setFont("Helvetica-Bold", 7.5)
-        self.setFillColor(colors.HexColor("#475569"))
+        self.setFont("Helvetica-Bold", 8)
+        self.setFillColor(colors.HexColor("#1F2937"))
         
-        # Header (pages 2+)
+        # Clean monochrome header on pages 2+
         if self._pageNumber > 1:
-            self.drawString(40, 810, "ASTANA IT UNIVERSITY — ShP-2216 SOFTWARE DESIGN PATTERNS")
-            self.drawRightString(555, 810, "ASSIGNMENT 06: VISITOR PATTERN")
-            self.setStrokeColor(colors.HexColor("#CBD5E1"))
-            self.setLineWidth(0.6)
+            self.drawString(40, 810, "ASTANA IT UNIVERSITY — VISITOR PATTERN (ADVANCED FILE SYSTEM)")
+            self.drawRightString(555, 810, "MURATBEK AKYL | SE 2523")
+            self.setStrokeColor(colors.HexColor("#4B5563"))
+            self.setLineWidth(0.8)
             self.line(40, 804, 555, 804)
 
-        # Footer (all pages)
+        # Clean monochrome footer on all pages
         self.setFont("Helvetica", 8)
-        self.setFillColor(colors.HexColor("#64748B"))
-        self.drawString(40, 28, "Author: Muratbek Akyl | Group: SE 2523 | Java 17 & Maven")
+        self.setFillColor(colors.HexColor("#374151"))
+        self.drawString(40, 26, "Muratbek Akyl | Group: SE 2523 | https://github.com/Akylsolo/SDP_Assignment6.git")
         page_str = f"Page {self._pageNumber} of {page_count}"
-        self.drawRightString(555, 28, page_str)
-        self.setStrokeColor(colors.HexColor("#CBD5E1"))
+        self.drawRightString(555, 26, page_str)
+        self.setStrokeColor(colors.HexColor("#9CA3AF"))
         self.setLineWidth(0.6)
-        self.line(40, 38, 555, 38)
+        self.line(40, 36, 555, 36)
         self.restoreState()
 
 
@@ -56,20 +56,20 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
         pagesize=A4,
         leftMargin=40,
         rightMargin=40,
-        topMargin=44,
-        bottomMargin=44
+        topMargin=42,
+        bottomMargin=42
     )
 
     styles = getSampleStyleSheet()
 
-    # Custom styles
+    # Pure black / neutral academic styles (NO blue colors)
     title_style = ParagraphStyle(
         'DocTitle',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=15.5,
-        leading=19,
-        textColor=colors.HexColor('#0F172A'),
+        fontSize=16.5,
+        leading=20,
+        textColor=colors.HexColor('#000000'),
         spaceAfter=3
     )
 
@@ -77,30 +77,21 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
         'InstHeader',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8.5,
-        leading=11,
-        textColor=colors.HexColor('#1E3A8A'),
+        fontSize=9.5,
+        leading=12,
+        textColor=colors.HexColor('#111827'),
         textTransform='uppercase',
-        spaceAfter=1
+        spaceAfter=2
     )
 
-    sub_style = ParagraphStyle(
-        'SubHeader',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=8,
-        leading=10,
-        textColor=colors.HexColor('#64748B'),
-        spaceAfter=5
-    )
-
+    # Larger, bolder black headings for clear visibility
     h1_style = ParagraphStyle(
         'Heading1_Custom',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=10.5,
-        leading=13.5,
-        textColor=colors.HexColor('#1E3A8A'),
+        fontSize=11.5,
+        leading=14.5,
+        textColor=colors.HexColor('#000000'),
         spaceBefore=7,
         spaceAfter=3,
         keepWithNext=True
@@ -110,20 +101,20 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
         'Body_Custom',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.2,
-        leading=10.8,
-        textColor=colors.HexColor('#1E293B'),
+        fontSize=8.3,
+        leading=11.0,
+        textColor=colors.HexColor('#111827'),
         alignment=4, # Justified
-        spaceAfter=4
+        spaceAfter=3.5
     )
 
     bullet_style = ParagraphStyle(
         'Bullet_Custom',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.0,
-        leading=10.5,
-        textColor=colors.HexColor('#1E293B'),
+        fontSize=8.1,
+        leading=10.6,
+        textColor=colors.HexColor('#111827'),
         leftIndent=12,
         firstLineIndent=-8,
         spaceAfter=2
@@ -135,45 +126,45 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
         fontName='Helvetica',
         fontSize=8.0,
         leading=10.5,
-        textColor=colors.HexColor('#1E293B'),
+        textColor=colors.HexColor('#111827'),
         leftIndent=8,
-        spaceAfter=3
+        spaceAfter=2.5
     )
 
     callout_style = ParagraphStyle(
         'Callout_Style',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.0,
-        leading=10.5,
-        textColor=colors.HexColor('#1E3A8A')
+        fontSize=8.1,
+        leading=10.7,
+        textColor=colors.HexColor('#111827')
     )
 
     table_header_style = ParagraphStyle(
         'TableHeader',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=7.8,
-        leading=9.5,
-        textColor=colors.HexColor('#1E3A8A')
+        fontSize=8.0,
+        leading=10.0,
+        textColor=colors.HexColor('#000000')
     )
 
     table_cell_style = ParagraphStyle(
         'TableCell',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=7.4,
-        leading=9.2,
-        textColor=colors.HexColor('#1E293B')
+        fontSize=7.6,
+        leading=9.5,
+        textColor=colors.HexColor('#111827')
     )
 
     table_code_cell = ParagraphStyle(
         'TableCode',
         parent=styles['Normal'],
         fontName='Courier-Bold',
-        fontSize=7.2,
-        leading=9.0,
-        textColor=colors.HexColor('#0F172A')
+        fontSize=7.4,
+        leading=9.2,
+        textColor=colors.HexColor('#000000')
     )
 
     code_block_style = ParagraphStyle(
@@ -182,31 +173,30 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
         fontName='Courier',
         fontSize=6.8,
         leading=8.5,
-        textColor=colors.HexColor('#F8FAFC')
+        textColor=colors.HexColor('#F4F4F5')
     )
 
     story = []
 
     # ================= PAGE 1 =================
-    # Top Academic Header
+    # Academic Header (Without the removed text)
     story.append(Paragraph("ASTANA IT UNIVERSITY — DEPARTMENT OF COMPUTER ENGINEERING", inst_style))
-    story.append(Paragraph("COURSE: ShP-2216 SOFTWARE DESIGN PATTERNS | RK2 LABORATORY ASSESSMENT", sub_style))
     story.append(Paragraph("Visitor Pattern — Advanced In-Memory File System", title_style))
 
-    # Metadata Table Box
+    # Clean Metadata Table Box (Black borders & crisp text)
     meta_data = [
         [
             Paragraph("<b>Author:</b> Muratbek Akyl", table_cell_style),
             Paragraph("<b>Group:</b> SE 2523", table_cell_style),
             Paragraph("<b>Stack:</b> Java 17 | Maven | JUnit 5", table_cell_style),
-            Paragraph("<b>Repo:</b> github.com/muratbek-akyl/SDP_Assignment6", table_cell_style)
+            Paragraph("<b>Repository:</b> https://github.com/Akylsolo/SDP_Assignment6.git", table_cell_style)
         ]
     ]
-    meta_table = Table(meta_data, colWidths=[110, 80, 130, 195])
+    meta_table = Table(meta_data, colWidths=[105, 75, 125, 210])
     meta_table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#CBD5E1')),
-        ('PADDING', (0,0), (-1,-1), 3),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F9FAFB')),
+        ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#111827')),
+        ('PADDING', (0,0), (-1,-1), 3.5),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(meta_table)
@@ -223,7 +213,7 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     )
     story.append(Paragraph(p1_text, body_style))
 
-    # Callout box for Double Dispatch
+    # Callout box for Double Dispatch (Monochrome styling)
     dd_box = [
         [Paragraph("<b>Double Dispatch Protocol (R2 & Engineering Constraint):</b><br/>"
                    "Double dispatch routes execution through two coordinated polymorphic dispatches:<br/>"
@@ -232,9 +222,9 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     ]
     t_dd = Table(dd_box, colWidths=[515])
     t_dd.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#EFF6FF')),
-        ('LINELEFT', (0,0), (-1,-1), 3.0, colors.HexColor('#2563EB')),
-        ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor('#BFDBFE')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F3F4F6')),
+        ('LINELEFT', (0,0), (-1,-1), 3.5, colors.HexColor('#111827')),
+        ('BOX', (0,0), (-1,-1), 0.8, colors.HexColor('#9CA3AF')),
         ('PADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(t_dd)
@@ -250,7 +240,7 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     story.append(Paragraph("• <b>Single Responsibility Principle:</b> <code>DirectoryNode</code> and <code>FileNode</code> remain lightweight composite containers managing child containment and byte sizes, free of traversal orchestration logic.", bullet_style))
     story.append(Paragraph("• <b>Guaranteed Reachability:</b> Every reachable node in the hierarchy is visited exactly once per execution. Both nested hierarchies and empty directories (depth and directory count) are comprehensively supported.", bullet_style))
 
-    # Architectural Trade-off
+    # Architectural Trade-off box
     tradeoff_box = [
         [Paragraph("<b>Architectural Trade-off of the Visitor Pattern:</b><br/>"
                    "• <b>Adding New Operations (Extremely Cheap):</b> Fully conforms to the <i>Open/Closed Principle (OCP)</i>. Introducing <code>StatisticsVisitor</code> (R8) required zero modifications to <code>Element</code>, <code>FileNode</code>, or <code>DirectoryNode</code>.<br/>"
@@ -258,9 +248,9 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     ]
     t_to = Table(tradeoff_box, colWidths=[515])
     t_to.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
-        ('LINELEFT', (0,0), (-1,-1), 3.0, colors.HexColor('#475569')),
-        ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F9FAFB')),
+        ('LINELEFT', (0,0), (-1,-1), 3.5, colors.HexColor('#374151')),
+        ('BOX', (0,0), (-1,-1), 0.8, colors.HexColor('#9CA3AF')),
         ('PADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(t_to)
@@ -278,11 +268,11 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     story.append(PageBreak())
     story.append(Paragraph("4. System Architecture & UML Class Diagram", h1_style))
     story.append(Paragraph(
-        "The class diagram below illustrates the complete object model, highlighting the separation between the Composite Element Hierarchy (left) and the Visitor Hierarchy (right), bridged by the bidirectional double dispatch interaction.",
+        "The class diagram below illustrates the complete object model in clean monochrome specification, highlighting the separation between the Composite Element Hierarchy (left) and the Visitor Hierarchy (right), bridged by the bidirectional double dispatch interaction.",
         body_style
     ))
 
-    # High-res UML Diagram
+    # High-res Monochrome UML Diagram
     if os.path.exists("uml_diagram.png"):
         img = Image("uml_diagram.png", width=7.2*inch, height=4.5*inch)
         story.append(img)
@@ -313,11 +303,11 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     ]
     t_int = Table(integrity_table_data, colWidths=[120, 140, 255])
     t_int.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#F1F5F9')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#CBD5E1')),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#E2E8F0')),
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#E5E7EB')),
+        ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#111827')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#D1D5DB')),
         ('PADDING', (0,0), (-1,-1), 3.5),
-        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.HexColor('#FFFFFF'), colors.HexColor('#F8FAFC')]),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.HexColor('#FFFFFF'), colors.HexColor('#F9FAFB')]),
     ]))
     story.append(t_int)
     story.append(Spacer(1, 4))
@@ -331,22 +321,22 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
 
     test_table_data = [
         [Paragraph("ID", table_header_style), Paragraph("Test Class Name", table_header_style), Paragraph("Verification Scope & Asserted Targets", table_header_style), Paragraph("Status", table_header_style)],
-        [Paragraph("<b>T1</b>", table_cell_style), Paragraph("<code>DoubleDispatchTest</code>", table_code_cell), Paragraph("Both element types reach correct overloaded visit methods via double dispatch; null visitor rejected.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (2/2)</b></font>", table_cell_style)],
-        [Paragraph("<b>T2</b>", table_cell_style), Paragraph("<code>TotalSizeVisitorTest</code>", table_code_cell), Paragraph("Size accumulation across 4+ nesting levels is accurate; directories contribute exactly 0 bytes.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (3/3)</b></font>", table_cell_style)],
-        [Paragraph("<b>T3</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code>", table_code_cell), Paragraph("Combines both filename criterion AND inclusive minimum size threshold (<code>size >= threshold</code>).", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (1/1)</b></font>", table_cell_style)],
-        [Paragraph("<b>T4</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code>", table_code_cell), Paragraph("Deterministic root-relative paths using '/' separator, sorted lexicographically; custom Predicates.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (2/2)</b></font>", table_cell_style)],
-        [Paragraph("<b>T5</b>", table_cell_style), Paragraph("<code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Collects accurate file count, directory count (including root), and maximum depth (root depth = 0).", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (2/2)</b></font>", table_cell_style)],
-        [Paragraph("<b>T6</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code><br/><code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Empty directories, 0-byte files, and no-match search queries handled gracefully without error.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (2/2)</b></font>", table_cell_style)],
-        [Paragraph("<b>T7</b>", table_cell_style), Paragraph("<code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Controlled state: invoking <code>reset()</code> ensures repeat executions do not leak or multiply state.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (1/1)</b></font>", table_cell_style)],
-        [Paragraph("<b>T8</b>", table_cell_style), Paragraph("<code>TreeIntegrityTest</code>", table_code_cell), Paragraph("Rejects negative size, blank names, duplicate siblings, multi-parent, and cycles while valid nesting works.", table_cell_style), Paragraph("<font color='#166534'><b>PASSED (7/7)</b></font>", table_cell_style)],
+        [Paragraph("<b>T1</b>", table_cell_style), Paragraph("<code>DoubleDispatchTest</code>", table_code_cell), Paragraph("Both element types reach correct overloaded visit methods via double dispatch; null visitor rejected.", table_cell_style), Paragraph("<b>PASSED (2/2)</b>", table_cell_style)],
+        [Paragraph("<b>T2</b>", table_cell_style), Paragraph("<code>TotalSizeVisitorTest</code>", table_code_cell), Paragraph("Size accumulation across 4+ nesting levels is accurate; directories contribute exactly 0 bytes.", table_cell_style), Paragraph("<b>PASSED (3/3)</b>", table_cell_style)],
+        [Paragraph("<b>T3</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code>", table_code_cell), Paragraph("Combines both filename criterion AND inclusive minimum size threshold (<code>size >= threshold</code>).", table_cell_style), Paragraph("<b>PASSED (1/1)</b>", table_cell_style)],
+        [Paragraph("<b>T4</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code>", table_code_cell), Paragraph("Deterministic root-relative paths using '/' separator, sorted lexicographically; custom Predicates.", table_cell_style), Paragraph("<b>PASSED (2/2)</b>", table_cell_style)],
+        [Paragraph("<b>T5</b>", table_cell_style), Paragraph("<code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Collects accurate file count, directory count (including root), and maximum depth (root depth = 0).", table_cell_style), Paragraph("<b>PASSED (2/2)</b>", table_cell_style)],
+        [Paragraph("<b>T6</b>", table_cell_style), Paragraph("<code>SearchVisitorTest</code><br/><code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Empty directories, 0-byte files, and no-match search queries handled gracefully without error.", table_cell_style), Paragraph("<b>PASSED (2/2)</b>", table_cell_style)],
+        [Paragraph("<b>T7</b>", table_cell_style), Paragraph("<code>StatisticsVisitorTest</code>", table_code_cell), Paragraph("Controlled state: invoking <code>reset()</code> ensures repeat executions do not leak or multiply state.", table_cell_style), Paragraph("<b>PASSED (1/1)</b>", table_cell_style)],
+        [Paragraph("<b>T8</b>", table_cell_style), Paragraph("<code>TreeIntegrityTest</code>", table_code_cell), Paragraph("Rejects negative size, blank names, duplicate siblings, multi-parent, and cycles while valid nesting works.", table_cell_style), Paragraph("<b>PASSED (7/7)</b>", table_cell_style)],
     ]
     t_test = Table(test_table_data, colWidths=[25, 125, 290, 75])
     t_test.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#F1F5F9')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#CBD5E1')),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#E2E8F0')),
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#E5E7EB')),
+        ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#111827')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#D1D5DB')),
         ('PADDING', (0,0), (-1,-1), 2.8),
-        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.HexColor('#FFFFFF'), colors.HexColor('#F8FAFC')]),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.HexColor('#FFFFFF'), colors.HexColor('#F9FAFB')]),
         ('ALIGN', (3,1), (3,-1), 'CENTER'),
     ]))
     story.append(t_test)
@@ -360,8 +350,8 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     ))
 
     raw_output = """================================================================================
-   ASTANA IT UNIVERSITY -- SOFTWARE DESIGN PATTERNS (ShP-2216)
-   ASSIGNMENT 06: VISITOR PATTERN -- ADVANCED FILE SYSTEM
+   ASTANA IT UNIVERSITY -- ADVANCED FILE SYSTEM
+   ASSIGNMENT 06: VISITOR PATTERN
    Student: Muratbek Akyl | Group: SE 2523
 ================================================================================
 
@@ -416,11 +406,12 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     [PASS] Cycle detected and rejected: Cycle detected: cannot add ancestor 'aitu-project-root' to directory 'src'
 ================================================================================"""
 
-    # Dark background preformatted block
+    # Neutral dark charcoal preformatted block
     pre_table = Table([[Preformatted(raw_output, code_block_style)]], colWidths=[515])
     pre_table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#0F172A')),
-        ('LINELEFT', (0,0), (-1,-1), 3.0, colors.HexColor('#3B82F6')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#18181B')),
+        ('LINELEFT', (0,0), (-1,-1), 3.5, colors.HexColor('#000000')),
+        ('BOX', (0,0), (-1,-1), 1.0, colors.HexColor('#27272A')),
         ('PADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(pre_table)
@@ -436,7 +427,7 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
                       "3. <b>Dynamic Query Mutation:</b> Demonstrated flexible Predicate/size filtering.<br/>"
                       "4. <b>Architectural Defense:</b> Articulated operation vs element extensibility trade-off.", table_cell_style),
             Paragraph("<b>Repository & Build Information:</b><br/>"
-                      "• <b>GitHub:</b> github.com/muratbek-akyl/SDP_Assignment6<br/>"
+                      "• <b>GitHub:</b> https://github.com/Akylsolo/SDP_Assignment6.git<br/>"
                       "• <b>Student:</b> Muratbek Akyl | Group: SE 2523<br/>"
                       "• <b>Test Command:</b> <code>mvn clean test</code><br/>"
                       "• <b>Run Command:</b> <code>mvn compile exec:java</code><br/>"
@@ -445,16 +436,16 @@ def build_pdf(filename="Assignment06_Report_Muratbek_Akyl_SE2523.pdf"):
     ]
     t_def = Table(defense_data, colWidths=[260, 255])
     t_def.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#CBD5E1')),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#E2E8F0')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F9FAFB')),
+        ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#111827')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#D1D5DB')),
         ('PADDING', (0,0), (-1,-1), 4),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
     story.append(t_def)
 
     doc.build(story, canvasmaker=NumberedCanvas)
-    print(f"Academic PDF report generated successfully: {filename}")
+    print(f"Monochrome academic PDF report generated successfully: {filename}")
 
 if __name__ == "__main__":
     build_pdf()

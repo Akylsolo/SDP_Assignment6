@@ -10,24 +10,24 @@ ax.set_xlim(0, 120)
 ax.set_ylim(0, 75)
 ax.axis('off')
 
-# Helper to draw a UML class card
-def draw_class(ax, x, y, w, h, title, stereotype, attributes, methods, header_bg='#EFF6FF', border_color='#1E40AF', title_color='#1E3A8A'):
-    # Card shadow
-    shadow = patches.FancyBboxPatch((x + 0.4, y - 0.4), w, h,
-                                   boxstyle="round,pad=0.2,rounding_size=1.0",
-                                   facecolor='#E2E8F0', edgecolor='none', zorder=1)
+# Helper to draw a clean monochrome academic UML class card
+def draw_class(ax, x, y, w, h, title, stereotype, attributes, methods, header_bg='#F3F4F6', border_color='#1E293B'):
+    # Card shadow (subtle neutral gray)
+    shadow = patches.FancyBboxPatch((x + 0.35, y - 0.35), w, h,
+                                   boxstyle="round,pad=0.2,rounding_size=0.8",
+                                   facecolor='#E5E7EB', edgecolor='none', zorder=1)
     ax.add_patch(shadow)
 
-    # Main card
+    # Main card (crisp white background, dark border)
     card = patches.FancyBboxPatch((x, y), w, h,
-                                 boxstyle="round,pad=0.2,rounding_size=1.0",
+                                 boxstyle="round,pad=0.2,rounding_size=0.8",
                                  facecolor='#FFFFFF', edgecolor=border_color, linewidth=1.5, zorder=2)
     ax.add_patch(card)
 
-    # Header background
+    # Header background (clean neutral light gray)
     header_h = 7.0 if stereotype else 5.5
     header = patches.FancyBboxPatch((x, y + h - header_h), w, header_h,
-                                   boxstyle="round,pad=0.2,rounding_size=1.0",
+                                   boxstyle="round,pad=0.2,rounding_size=0.8",
                                    facecolor=header_bg, edgecolor='none', zorder=3)
     ax.add_patch(header)
     
@@ -39,35 +39,34 @@ def draw_class(ax, x, y, w, h, title, stereotype, attributes, methods, header_bg
     # Header dividing line
     ax.plot([x - 0.2, x + w + 0.2], [y + h - header_h, y + h - header_h], color=border_color, linewidth=1.2, zorder=4)
 
-    # Header text
+    # Header text (black)
     if stereotype:
         ax.text(x + w/2, y + h - 2.2, f'<<{stereotype}>>', ha='center', va='center',
-                fontsize=8, fontstyle='italic', fontweight='bold', color=title_color, zorder=5)
+                fontsize=8.5, fontstyle='italic', fontweight='bold', color='#374151', zorder=5)
         ax.text(x + w/2, y + h - 5.0, title, ha='center', va='center',
-                fontsize=10.5, fontweight='bold', color='#0F172A', zorder=5)
+                fontsize=10.5, fontweight='bold', color='#111827', zorder=5)
     else:
         ax.text(x + w/2, y + h - 2.8, title, ha='center', va='center',
-                fontsize=10.5, fontweight='bold', color='#0F172A', zorder=5)
+                fontsize=10.5, fontweight='bold', color='#111827', zorder=5)
 
     curr_y = y + h - header_h - 2.0
 
-    # Attributes
+    # Attributes (black / charcoal)
     if attributes:
         for attr in attributes:
-            ax.text(x + 1.2, curr_y, attr, ha='left', va='center', fontsize=8.2, color='#334155', zorder=5)
+            ax.text(x + 1.2, curr_y, attr, ha='left', va='center', fontsize=8.2, color='#1F2937', zorder=5)
             curr_y -= 2.2
         # Divider between attributes and methods
-        ax.plot([x - 0.2, x + w + 0.2], [curr_y + 0.9, curr_y + 0.9], color='#E2E8F0', linewidth=1.0, zorder=4)
+        ax.plot([x - 0.2, x + w + 0.2], [curr_y + 0.9, curr_y + 0.9], color='#D1D5DB', linewidth=1.0, zorder=4)
         curr_y -= 1.2
 
-    # Methods
+    # Methods (black / bold for key methods)
     for meth in methods:
-        color = '#1D4ED8' if 'accept' in meth or 'visit' in meth else '#0F172A'
         weight = 'bold' if 'accept' in meth or 'visit' in meth else 'normal'
-        ax.text(x + 1.2, curr_y, meth, ha='left', va='center', fontsize=8.2, color=color, fontweight=weight, zorder=5)
+        ax.text(x + 1.2, curr_y, meth, ha='left', va='center', fontsize=8.2, color='#111827', fontweight=weight, zorder=5)
         curr_y -= 2.2
 
-# 1. Element Interface
+# 1. Element Interface (Monochrome)
 draw_class(ax, 6, 48, 44, 21,
            'Element', 'interface',
            [],
@@ -75,9 +74,9 @@ draw_class(ax, 6, 48, 44, 21,
             '+ getParent(): DirectoryNode',
             '+ setParent(parent: DirectoryNode): void',
             '+ accept(visitor: Visitor): void'],
-           header_bg='#ECFDF5', border_color='#059669', title_color='#047857')
+           header_bg='#E5E7EB', border_color='#111827')
 
-# 2. FileNode Class
+# 2. FileNode Class (Monochrome)
 draw_class(ax, 4, 15, 23, 24,
            'FileNode', None,
            ['- name: String',
@@ -88,9 +87,9 @@ draw_class(ax, 4, 15, 23, 24,
             '+ getName(): String',
             '+ getParent(): DirectoryNode',
             '+ accept(v: Visitor): void'],
-           header_bg='#F8FAFC', border_color='#475569', title_color='#1E293B')
+           header_bg='#F3F4F6', border_color='#1E293B')
 
-# 3. DirectoryNode Class
+# 3. DirectoryNode Class (Monochrome)
 draw_class(ax, 30, 12, 26, 27,
            'DirectoryNode', None,
            ['- name: String',
@@ -102,18 +101,18 @@ draw_class(ax, 30, 12, 26, 27,
             '+ findChild(name: String): Opt',
             '+ getName(): String',
             '+ accept(v: Visitor): void'],
-           header_bg='#F8FAFC', border_color='#475569', title_color='#1E293B')
+           header_bg='#F3F4F6', border_color='#1E293B')
 
-# 4. Visitor Interface
+# 4. Visitor Interface (Monochrome)
 draw_class(ax, 68, 50, 46, 18,
            'Visitor', 'interface',
            [],
            ['+ visit(file: FileNode): void',
             '+ visit(directory: DirectoryNode): void',
             '// Overloaded double dispatch methods'],
-           header_bg='#EFF6FF', border_color='#2563EB', title_color='#1D4ED8')
+           header_bg='#E5E7EB', border_color='#111827')
 
-# 5. TotalSizeVisitor
+# 5. TotalSizeVisitor (Monochrome)
 draw_class(ax, 62, 26, 26, 19,
            'TotalSizeVisitor', None,
            ['- totalSize: long'],
@@ -121,9 +120,9 @@ draw_class(ax, 62, 26, 26, 19,
             '+ visit(d: DirectoryNode): void',
             '+ getTotalSize(): long',
             '+ reset(): void'],
-           header_bg='#F8FAFC', border_color='#475569', title_color='#1E293B')
+           header_bg='#F3F4F6', border_color='#1E293B')
 
-# 6. SearchVisitor
+# 6. SearchVisitor (Monochrome)
 draw_class(ax, 91, 23, 26, 22,
            'SearchVisitor', None,
            ['- criterion: Predicate<String>',
@@ -134,9 +133,9 @@ draw_class(ax, 91, 23, 26, 22,
             '+ visit(d: DirectoryNode): void',
             '+ getMatchingPaths(): List',
             '+ reset(): void'],
-           header_bg='#F8FAFC', border_color='#475569', title_color='#1E293B')
+           header_bg='#F3F4F6', border_color='#1E293B')
 
-# 7. StatisticsVisitor (R8 Extensibility)
+# 7. StatisticsVisitor (R8 Extensibility - Monochrome)
 draw_class(ax, 72, 2, 36, 18,
            'StatisticsVisitor (R8 Extension)', None,
            ['- fileCount, dirCount, maxDepth: int'],
@@ -144,50 +143,50 @@ draw_class(ax, 72, 2, 36, 18,
             '+ getFileCount(), getDirectoryCount(): int',
             '+ getMaxDepth(): int [root depth = 0]',
             '+ reset(): void'],
-           header_bg='#F5F3FF', border_color='#7C3AED', title_color='#5B21B6')
+           header_bg='#F3F4F6', border_color='#1E293B')
 
-# Realization Arrows (Dashed with triangular head)
+# Realization Arrows (Dashed black arrows with open triangular head)
 # FileNode -> Element
 ax.annotate('', xy=(20, 48), xytext=(15, 39),
-            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#059669", lw=1.5, mutation_scale=15))
+            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#111827", lw=1.5, mutation_scale=15))
 
 # DirectoryNode -> Element
 ax.annotate('', xy=(34, 48), xytext=(38, 39),
-            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#059669", lw=1.5, mutation_scale=15))
+            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#111827", lw=1.5, mutation_scale=15))
 
 # Visitors -> Visitor Interface
 ax.annotate('', xy=(78, 50), xytext=(75, 45),
-            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#2563EB", lw=1.5, mutation_scale=15))
+            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#111827", lw=1.5, mutation_scale=15))
 ax.annotate('', xy=(95, 50), xytext=(100, 45),
-            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#2563EB", lw=1.5, mutation_scale=15))
+            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#111827", lw=1.5, mutation_scale=15))
 ax.annotate('', xy=(88, 50), xytext=(88, 20),
-            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#7C3AED", lw=1.5, mutation_scale=15))
+            arrowprops=dict(arrowstyle="-|>", linestyle="--", color="#111827", lw=1.5, mutation_scale=15))
 
-# Double Dispatch arrows
+# Double Dispatch arrows (Monochrome dotted lines)
 # Element.accept -> Visitor
 ax.annotate('', xy=(68, 58), xytext=(50, 58),
-            arrowprops=dict(arrowstyle="->", linestyle=":", color="#2563EB", lw=2, mutation_scale=12))
-ax.text(59, 59.5, 'accept(v)', ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1D4ED8')
+            arrowprops=dict(arrowstyle="->", linestyle=":", color="#111827", lw=1.8, mutation_scale=12))
+ax.text(59, 59.5, 'accept(v)', ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#111827')
 
 # Visitor.visit -> Element
 ax.annotate('', xy=(50, 54), xytext=(68, 54),
-            arrowprops=dict(arrowstyle="->", linestyle=":", color="#059669", lw=2, mutation_scale=12))
-ax.text(59, 52, 'v.visit(this)', ha='center', va='top', fontsize=8.5, fontweight='bold', color='#047857')
+            arrowprops=dict(arrowstyle="->", linestyle=":", color="#111827", lw=1.8, mutation_scale=12))
+ax.text(59, 52, 'v.visit(this)', ha='center', va='top', fontsize=8.5, fontweight='bold', color='#111827')
 
 # Composite association: DirectoryNode contains children: List<Element>
-ax.plot([56, 58, 58, 50], [25, 25, 62, 62], color='#1E293B', lw=1.3)
+ax.plot([56, 58, 58, 50], [25, 25, 62, 62], color='#111827', lw=1.3)
 # Diamond on DirectoryNode
 diamond = patches.Polygon([[56, 25], [54.5, 26], [53, 25], [54.5, 24]], closed=True,
-                          facecolor='#1E293B', edgecolor='#1E293B', zorder=5)
+                          facecolor='#111827', edgecolor='#111827', zorder=5)
 ax.add_patch(diamond)
-ax.text(59, 44, 'children 0..*', rotation=-90, ha='center', va='center', fontsize=7.5, fontweight='bold', color='#334155')
+ax.text(59, 44, 'children 0..*', rotation=-90, ha='center', va='center', fontsize=7.5, fontweight='bold', color='#111827')
 
-# Title annotation at top
+# Title annotation at top in neutral black / gray
 ax.text(60, 73, 'Visitor Behavioral Pattern — Advanced File System Class Diagram',
-        ha='center', va='center', fontsize=13, fontweight='bold', color='#0F172A')
-ax.text(60, 71, 'Astana IT University | ShP-2216 Software Design Patterns | Author: Muratbek Akyl (SE 2523)',
-        ha='center', va='center', fontsize=9, color='#64748B')
+        ha='center', va='center', fontsize=13, fontweight='bold', color='#111827')
+ax.text(60, 71, 'Astana IT University | Author: Muratbek Akyl (SE 2523)',
+        ha='center', va='center', fontsize=9, color='#4B5563')
 
 plt.tight_layout()
 plt.savefig('uml_diagram.png', dpi=300, bbox_inches='tight')
-print("uml_diagram.png generated successfully at 300 DPI.")
+print("Monochrome uml_diagram.png generated successfully at 300 DPI.")

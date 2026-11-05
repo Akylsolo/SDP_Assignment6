@@ -4,6 +4,7 @@
 **Institution:** Astana IT University  
 **Student:** Muratbek Akyl  
 **Group:** SE 2523  
+**Repository:** https://github.com/Akylsolo/SDP_Assignment6.git  
 
 ---
 
